@@ -5,8 +5,8 @@ from pathlib import Path
 
 # Set the title and favicon that appear in the Browser's tab bar.
 st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
+    page_title='Africa GDP dashboard',
+    page_icon=':earth_africa:', # This is an emoji shortcode. Could be a URL too.
 )
 
 # -----------------------------------------------------------------------------
@@ -22,7 +22,7 @@ def get_gdp_data():
     """
 
     # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
+    DATA_FILENAME = Path(__file__).parent/'data/gdp_data_africa.csv'
     raw_gdp_df = pd.read_csv(DATA_FILENAME)
 
     MIN_YEAR = 1960
@@ -57,6 +57,10 @@ def get_gdp_data():
 
     return gdp_df
 
+#Raw data for displaying a Dataframe at the bottom
+raw_gdp_df = pd.read_csv('data/gdp_data_africa.csv')
+
+
 gdp_df = get_gdp_data()
 
 # -----------------------------------------------------------------------------
@@ -64,7 +68,7 @@ gdp_df = get_gdp_data()
 
 # Set the title that appears at the top of the page.
 '''
-# :earth_americas: GDP dashboard
+# :earth_africa: Africa GDP dashboard
 
 Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
 notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
@@ -82,7 +86,7 @@ from_year, to_year = st.slider(
     'Which years are you interested in?',
     min_value=min_value,
     max_value=max_value,
-    value=[min_value, max_value])
+    value=[2000, max_value])
 
 countries = gdp_df['Country Code'].unique()
 
@@ -90,9 +94,9 @@ if not len(countries):
     st.warning("Select at least one country")
 
 selected_countries = st.multiselect(
-    'Which countries would you like to view?',
+    'Which African countries would you like to view?',
     countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
+    ['KEN', 'UGA', 'TZA', 'RWA', 'DJI'])
 
 ''
 ''
@@ -105,7 +109,7 @@ filtered_gdp_df = gdp_df[
     & (from_year <= gdp_df['Year'])
 ]
 
-st.header('GDP over time', divider='gray')
+st.header('GDP over time', divider='rainbow')
 
 ''
 
@@ -113,6 +117,7 @@ st.line_chart(
     filtered_gdp_df,
     x='Year',
     y='GDP',
+    y_label='GDP in $',
     color='Country Code',
 )
 
@@ -123,7 +128,7 @@ st.line_chart(
 first_year = gdp_df[gdp_df['Year'] == from_year]
 last_year = gdp_df[gdp_df['Year'] == to_year]
 
-st.header(f'GDP in {to_year}', divider='gray')
+st.header(f'GDP in {to_year}', divider='rainbow')
 
 ''
 
@@ -149,3 +154,8 @@ for i, country in enumerate(selected_countries):
             delta=growth,
             delta_color=delta_color
         )
+        
+#Display Dataframe
+view = st.checkbox('Display Table')
+if view:
+    st.dataframe(raw_gdp_df, use_container_width=True)

@@ -18,3 +18,5 @@ A simple Streamlit app showing the GDP of different African countries.
    ```
    $ streamlit run streamlit_app.py
    ```
+
+forked from https://github.com/streamlit/gdp-dashboard-template

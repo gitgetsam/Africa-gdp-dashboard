@@ -2,7 +2,7 @@
 
 You can view the app using this link. [https://github.com/gitgetsam/Africa-gdp-dashboard](https://africa-gdp-dashboard.streamlit.app/)
 
-A simple Streamlit app showing the GDP of different African countries in the world.
+A simple Streamlit app showing the GDP of different African countries.
 
 
 ### How to run it on your own machine
